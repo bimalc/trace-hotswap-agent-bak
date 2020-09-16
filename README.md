@@ -1,14 +1,13 @@
-# Trace Agent
+# Trace HotSwap Agent
 
-While analyzing java process whihc is stuck/hanging or is having some performance related issues,
-lots of time we do not want to restart the process and start with specific argumets or change log 
-level. This can be because we are not sure when ( or even where in distributed environment) it will 
-happen next  or we might not have flexiblity to change the log level if the app is in production.
-We want to hook some tool to the process and gather as much data as possile.
+While analyzing java process which is stuck or hanging or having some performance issues, we 
+want to extract as much info as possible without have to restart it with different DEBUG level 
+or with added code or library. 
 
-This is a java agent whihc attaches to a running jvm and alter log levels or trace various methods 
+This is a java agent which attaches to a running jvm and can alter log levels or trace various methods 
 based on configurable simple text file.  
 
+Forked and modified from https://github.com/attilapiros/trace-agent
 
 # The example
 
@@ -16,54 +15,13 @@ Here is the example to show how this tool can be used:
 
 ## The project we would like to trace
 
-Let's say we have a project what we would like analyze. In this example its code very simple:
-
-```java
-
-package net.test;
-
-import 
-
-public class App {
-    public static void main( String[] args )
-    {
-        new TestClass().test();
-        TestClass2nd testClass2nd = new TestClass2nd();
-        testClass2nd.anotherMethod();
-        testClass2nd.methodWithArgs("secret", 42);
-    }
-}
+Let's say we have a project what we would like analyze which uses log4j to log info and calls 
+multiple methods in different classes. We want to change log level at runtime or instrument time spent in some methods
+or arguments passed to any method etc. 
 
 
-class TestClass {
-
-  public void test() {
-      System.out.println("Hello World!");
-      try {
-        Thread.sleep(100);
-      } catch(Exception e) { }
-  }
-}
-
-class TestClass2nd {
-
-  public void anotherMethod() {
-      System.out.println("2nd Hello World!");
-      try {
-        Thread.sleep(100);
-      } catch(Exception e) { }
-  }
-
-  public int methodWithArgs(String str, int i) {
-      System.out.println("methodWithArgs");
-      return 12;
-  }
-}
-
-```
-
-Which can be executed as:
-$java -cp target/TestApp-1.0-SNAPSHOT.jar net.test.App
+The test app  can be executed as following:
+$java -cp test-app/target/TestApp-1.0-SNAPSHOT.jar net.test.App
 20/09/15 13:50:34 INFO test.App: Thread-0: New Thread calling test()21
 20/09/15 13:50:39 INFO test.App: Thread-1: New Thread calling test() and methodswithargs()..22
 20/09/15 13:50:39 INFO test.App: Thread-0: New Thread calling test()22
@@ -75,8 +33,8 @@ actions.txt as following
 
 log4jlevel net.test.App debug 
 
-And then run load th agent using the pid of the process as following:
-$java -cp java-trace-1.0.0-SNAPSHOT.jar:tools.jar:actions.txt net.test.AgentLoader target/trace-agent-1.0-SNAPSHOT.jar=actionsFile:/tmp/actions.txt  <PID>
+And then run load agent using the pid of the process as following:
+$java -cp agent-loader/target/java-trace-1.0.0-SNAPSHOT.jar:tools.jar net.test.AgentLoader trace-agent/target/trace-agent-1.0-SNAPSHOT.jar <PID>
 
 And you will see the message change on the previous terminal
 

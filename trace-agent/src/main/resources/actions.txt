@@ -1,0 +1,6 @@
+elapsed_time_in_nano net.test.App$TestClass test  isDateLogged:true
+elapsed_time_in_ms  net.test.App$TestClass2nd test isDateLogged:true
+stack_trace net.test.App$TestClass2nd methodWithArgs 	
+trace_args net.test.App$TestClass2nd  methodWithArgs	
+trace_retval net.test.App$TestClass2nd  methodWithArgs 
+counter	net.test.App$TestClass2nd  methodWithArgs 

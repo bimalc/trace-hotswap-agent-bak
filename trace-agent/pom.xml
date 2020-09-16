@@ -29,6 +29,22 @@
       <artifactId>byte-buddy</artifactId>
       <version>1.10.10</version>
     </dependency>
+    <dependency>
+<groupId>org.slf4j</groupId>
+<artifactId>slf4j-log4j12</artifactId>
+<version>1.6.1</version>
+</dependency>
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>2.4</version>
+    </dependency>
+    <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.4</version>
+  </dependency>
+
   </dependencies>
 
   <build>
@@ -114,6 +130,9 @@
             <manifestEntries>
               <Premain-Class>${premain}</Premain-Class>
               <Agent-Class>${premain}</Agent-Class>
+	      <Can-Redefine-Classes>true</Can-Redefine-Classes>
+              <Can-Retransform-Classes>true</Can-Retransform-Classes>
+              <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
             </manifestEntries>
           </archive>
         </configuration>
